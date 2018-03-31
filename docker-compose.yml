@@ -1,0 +1,19 @@
+version: '3.0'
+
+services:
+  nginx:
+    build:
+      .
+    networks:
+      - nginx
+    ports:
+      - '8080:8080'
+      - '4433:4433'
+    volumes:
+      - ./samples/cli.ini:/etc/letsencrypt/cli.ini
+      - ./samples/default.conf:/etc/nginx/sites-available/default
+      - ./samples/dh_params.pem:/etc/ssl/dh/dh_params.pem
+      - ./samples/index.html:/var/www/index.html
+
+networks:
+  nginx:

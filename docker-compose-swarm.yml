@@ -1,0 +1,61 @@
+version: '3.3'
+
+services:
+  nginx:
+    image: registry.oneplaceapp.com/nathamanath/lets_nginx:0.2.0
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 4G
+      restart_policy:
+        max_attempts: 1
+        delay: 10s
+    networks:
+      - nginx
+    ports:
+      - 80:8080
+      - 443:4433
+    read_only: true
+    configs:
+      - source: dh_params
+        target: /etc/ssl/dh/dh_params.pem
+      - source: default_conf
+        target: /etc/nginx/sites-available/default
+      - source: cli
+        target: /scripts/cli.ini
+    volumes:
+      - nginx-lib:/var/lib/nginx
+      - nginx-share:/usr/share/nginx
+      - nginx-cfg-supervisor:/etc/supervisor/conf.d
+      - nginx-cfg-nginx:/etc/nginx
+      - nginx-cfg-letsencrypt:/etc/letsencrypt
+      - nginx-webroot:/var/www
+      - type: tmpfs
+        target: /run
+      - type: tmpfs
+        target: /var/log
+      - type: tmpfs
+        target: /tmp
+
+configs:
+  dh_params:
+    file: ./dh_params.pem
+    default_conf:
+      file: ./default-tls.conf
+      cli:
+        file: ./cli.ini
+
+volumes:
+  nginx-lib:
+  nginx-share:
+  nginx-cfg-supervisor:
+  nginx-cfg-nginx:
+  nginx-cfg-letsencrypt:
+  nginx-webroot:
+
+networks:
+  nginx:
+    driver: overlay
+    attachable: true
