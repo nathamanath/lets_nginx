@@ -11,7 +11,7 @@ services:
       - '4433:4433'
     volumes:
       - ./samples/cli.ini:/etc/letsencrypt/cli.ini
-      - ./samples/default.conf:/etc/nginx/sites-available/default
+      - ./samples/default:/etc/nginx/sites-available/default
       - ./samples/dh_params.pem:/etc/ssl/dh/dh_params.pem
       - ./samples/index.html:/var/www/index.html
 

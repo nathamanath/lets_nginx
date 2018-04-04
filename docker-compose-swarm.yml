@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   nginx:
-    image: registry.oneplaceapp.com/nathamanath/lets_nginx:0.2.0
+    image: registry.oneplaceapp.com/nathamanath/lets_nginx:latest
     deploy:
       replicas: 1
       resources:
