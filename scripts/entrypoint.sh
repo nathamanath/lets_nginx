@@ -7,10 +7,10 @@ nginx -v
 certbot --version
 
 # Create log directories
-if [ ! -d /var/log/nginx ]
-then
-  mkdir /var/log/nginx
-fi
+# if [ ! -d /var/log/nginx ]
+# then
+#   mkdir /var/log/nginx
+# fi
 
 if [ -f /etc/letsencrypt/cli.ini ]
 then
