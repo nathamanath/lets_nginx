@@ -10,7 +10,7 @@ RUN apk add --update \
 
 # Copy in scripts
 COPY ./scripts/* /usr/local/bin/
-RUN chmod +x \
+RUN chmod 744 \
   /usr/local/bin/cert_renew.sh \
   /usr/local/bin/entrypoint.sh \
   /usr/local/bin/healthcheck.sh
@@ -30,14 +30,17 @@ RUN mkdir /etc/letsencrypt
 RUN mkdir /etc/nginx/sites-enabled
 RUN mkdir /etc/nginx/sites-available
 RUN mkdir -p /var/lib/letsencrypt
+RUN mkdir -p /var/log/letsencrypt
 RUN mkdir -p /var/www/letsencrypt/.well-known/acme-challenge
 
 # Remove old Nginx defaults
 RUN rm /etc/nginx/conf.d/default.conf
 
 RUN adduser -D -H -s /bin/sh www-data
+
 # Permission changes
 RUN chown -R www-data \
+  /var/log/letsencrypt \
   /var/log/nginx \
   /var/cache/nginx/ \
   /etc/nginx \
@@ -45,11 +48,11 @@ RUN chown -R www-data \
   /etc/supervisor\
   /var/lib/letsencrypt \
   /usr/share/nginx \
-  /var/www
+  /var/www \
+  /usr/local/bin/cert_renew.sh \
+  /usr/local/bin/entrypoint.sh \
+  /usr/local/bin/healthcheck.sh
 
-# no var lib nginx???
-
-# TODO: can we not 777
 RUN chmod 777 \
   /var/log \
   /var/run \
